@@ -1,0 +1,19 @@
+{
+  "name": "kisaan-mandi",
+  "version": "1.0.0",
+  "description": "Kisaan Mandi - Direct buyer-farmer connection platform for crop trading",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm run dev",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "keywords": ["agriculture", "crops", "farmers", "buyers"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+

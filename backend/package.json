@@ -1,0 +1,21 @@
+{
+  "name": "kisaan-mandi-backend",
+  "version": "1.0.0",
+  "description": "Backend for Kisaan Mandi platform",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "mongoose": "^8.0.3",
+    "@google/generative-ai": "^0.2.1",
+    "axios": "^1.6.2",
+    "socket.io": "^4.6.1"
+  }
+}
+
