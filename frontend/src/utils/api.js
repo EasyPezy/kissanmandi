@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:5000/api';
+// Use environment variable for API URL, fallback to proxy in dev or relative path
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 // Create axios instance with default config
 const api = axios.create({

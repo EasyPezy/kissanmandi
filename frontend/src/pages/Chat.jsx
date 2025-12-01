@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import axios from 'axios';
+import api from '../utils/api';
 
 const Chat = () => {
   const { buyerId, farmId } = useParams();
@@ -26,7 +26,7 @@ const Chat = () => {
 
   const fetchChat = async () => {
     try {
-      const response = await axios.get(`/api/chat/${buyerId}/${farmId}`);
+      const response = await api.get(`/chat/${buyerId}/${farmId}`);
       setMessages(response.data.messages || []);
     } catch (error) {
       console.error('Error fetching chat:', error);
@@ -35,7 +35,7 @@ const Chat = () => {
 
   const fetchFarm = async () => {
     try {
-      const response = await axios.get(`/api/farms/${farmId}`);
+      const response = await api.get(`/farms/${farmId}`);
       setFarm(response.data);
     } catch (error) {
       console.error('Error fetching farm:', error);
@@ -46,7 +46,7 @@ const Chat = () => {
     if (!newMessage.trim()) return;
 
     try {
-      await axios.post(`/api/chat/${buyerId}/${farmId}/message`, {
+      await api.post(`/chat/${buyerId}/${farmId}/message`, {
         sender: 'buyer',
         message: newMessage,
       });

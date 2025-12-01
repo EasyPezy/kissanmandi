@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import axios from 'axios';
+import api from '../utils/api';
 
 const STATES = [
   { name: 'Andhra Pradesh', lat: 15.9129, lng: 79.7400 },
@@ -46,7 +46,7 @@ const AIPrediction = () => {
     setError(null);
     try {
       const state = STATES.find(s => s.name === form.state);
-      const res = await axios.post('/api/ai/predict-yield', {
+      const res = await api.post('/ai/predict-yield', {
         ...form,
         latitude: state?.lat || '',
         longitude: state?.lng || '',

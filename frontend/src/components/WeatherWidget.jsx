@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 
 const WeatherWidget = ({ latitude, longitude }) => {
   const [weather, setWeather] = useState(null);
@@ -13,7 +13,7 @@ const WeatherWidget = ({ latitude, longitude }) => {
 
   const fetchWeather = async () => {
     try {
-      const response = await axios.get(`/api/weather/${latitude}/${longitude}`, { timeout: 5000 });
+      const response = await api.get(`/weather/${latitude}/${longitude}`, { timeout: 5000 });
       setWeather(response.data);
       setLoading(false);
     } catch (error) {

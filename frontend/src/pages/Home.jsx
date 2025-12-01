@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import axios from 'axios';
+import api from '../utils/api';
 
 const Home = () => {
   const { t } = useLanguage();
@@ -25,8 +25,8 @@ const Home = () => {
       };
 
       const [farmsRes, cropsRes] = await Promise.all([
-        axios.get('/api/farms', axiosConfig).catch(() => ({ data: [] })),
-        axios.get('/api/crops', axiosConfig).catch(() => ({ data: [] }))
+        api.get('/farms', { timeout: 5000 }).catch(() => ({ data: [] })),
+        api.get('/crops', { timeout: 5000 }).catch(() => ({ data: [] }))
       ]);
       
       const farms = farmsRes.data || [];

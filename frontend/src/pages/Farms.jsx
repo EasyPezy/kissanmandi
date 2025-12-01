@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import axios from 'axios';
+import api from '../utils/api';
 
 const Farms = () => {
   const { t } = useLanguage();
@@ -24,7 +24,7 @@ const Farms = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await axios.get('/api/farms', { timeout: 5000 });
+      const res = await api.get('/farms', { timeout: 5000 });
       const data = res.data || [];
       setFarms(data);
       setFiltered(data);

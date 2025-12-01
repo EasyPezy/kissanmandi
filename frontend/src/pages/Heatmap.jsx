@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import axios from 'axios';
+import api from '../utils/api';
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 
@@ -32,7 +32,7 @@ const Heatmap = () => {
 
   const loadCrops = async () => {
     try {
-      const res = await axios.get('/api/crops', { timeout: 5000 });
+      const res = await api.get('/crops', { timeout: 5000 });
       setCrops(res.data || []);
     } catch (err) {
       console.error('Error loading crops:', err);
@@ -44,10 +44,10 @@ const Heatmap = () => {
       setLoading(true);
       setError(null);
       const url = selectedCrop === 'all' 
-        ? '/api/crops/heatmap/all'
-        : `/api/crops/availability/${selectedCrop}`;
+        ? '/crops/heatmap/all'
+        : `/crops/availability/${selectedCrop}`;
       
-      const res = await axios.get(url, { timeout: 5000 });
+      const res = await api.get(url, { timeout: 5000 });
       setData(res.data || []);
     } catch (err) {
       console.error('Error loading heatmap data:', err);

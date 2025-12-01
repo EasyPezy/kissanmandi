@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import axios from 'axios';
+import api from '../utils/api';
 
 const CropStats = () => {
   const { t } = useLanguage();
@@ -26,7 +26,7 @@ const CropStats = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await axios.get('/api/crops', { timeout: 5000 });
+      const res = await api.get('/crops', { timeout: 5000 });
       setCrops(res.data || []);
     } catch (err) {
       console.error('Error loading crops:', err);
@@ -46,7 +46,7 @@ const CropStats = () => {
 
   const loadStats = async () => {
     try {
-      const res = await axios.get(`/api/crops/stats/${selected}`, { timeout: 5000 });
+      const res = await api.get(`/crops/stats/${selected}`, { timeout: 5000 });
       setStats(res.data);
     } catch (err) {
       console.error('Error loading stats:', err);
