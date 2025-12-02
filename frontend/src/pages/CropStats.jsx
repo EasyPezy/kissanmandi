@@ -26,19 +26,12 @@ const CropStats = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await api.get('/crops', { timeout: 5000 });
-      setCrops(res.data || []);
+      const res = await api.get('/crops', { timeout: 5000 }).catch(() => ({ data: [] }));
+      setCrops(Array.isArray(res?.data) ? res.data : []);
     } catch (err) {
       console.error('Error loading crops:', err);
-      if (err.code === 'ECONNREFUSED' || err.message.includes('Network Error')) {
-        setError('Backend server is not running. Please start it with: cd backend && npm run dev');
-        setCrops([]);
-      } else {
-        // Try to use data even if there's an error
-        const responseData = err.response?.data || [];
-        setCrops(Array.isArray(responseData) ? responseData : []);
-        setError(null);
-      }
+      setCrops([]);
+      setError('Unable to load crops. The backend may not be available.');
     } finally {
       setLoading(false);
     }

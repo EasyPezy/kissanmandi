@@ -32,10 +32,11 @@ const Heatmap = () => {
 
   const loadCrops = async () => {
     try {
-      const res = await api.get('/crops', { timeout: 5000 });
-      setCrops(res.data || []);
+      const res = await api.get('/crops', { timeout: 5000 }).catch(() => ({ data: [] }));
+      setCrops(Array.isArray(res?.data) ? res.data : []);
     } catch (err) {
       console.error('Error loading crops:', err);
+      setCrops([]);
     }
   };
 
@@ -47,19 +48,12 @@ const Heatmap = () => {
         ? '/crops/heatmap/all'
         : `/crops/availability/${selectedCrop}`;
       
-      const res = await api.get(url, { timeout: 5000 });
-      setData(res.data || []);
+      const res = await api.get(url, { timeout: 5000 }).catch(() => ({ data: [] }));
+      setData(Array.isArray(res?.data) ? res.data : []);
     } catch (err) {
       console.error('Error loading heatmap data:', err);
-      if (err.code === 'ECONNREFUSED' || err.message.includes('Network Error')) {
-        setError('Backend server is not running. Please start it with: cd backend && npm run dev');
-        setData([]);
-      } else {
-        // Try to use data even if there's an error
-        const responseData = err.response?.data || [];
-        setData(Array.isArray(responseData) ? responseData : []);
-        setError(null);
-      }
+      setData([]);
+      setError('Unable to load heatmap data. The backend may not be available.');
     } finally {
       setLoading(false);
     }

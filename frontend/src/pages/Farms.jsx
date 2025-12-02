@@ -24,23 +24,15 @@ const Farms = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await api.get('/farms', { timeout: 5000 });
-      const data = res.data || [];
-      setFarms(data);
-      setFiltered(data);
+      const res = await api.get('/farms', { timeout: 5000 }).catch(() => ({ data: [] }));
+      const data = res?.data || [];
+      setFarms(Array.isArray(data) ? data : []);
+      setFiltered(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Error loading farms:', err);
-      if (err.code === 'ECONNREFUSED' || err.message.includes('Network Error')) {
-        setError('Backend server is not running. Please start it with: cd backend && npm run dev');
-        setFarms([]);
-        setFiltered([]);
-      } else {
-        // Try to use data even if there's an error
-        const data = err.response?.data || [];
-        setFarms(Array.isArray(data) ? data : []);
-        setFiltered(Array.isArray(data) ? data : []);
-        setError(null);
-      }
+      setFarms([]);
+      setFiltered([]);
+      setError('Unable to load farms. The backend may not be available.');
     } finally {
       setLoading(false);
     }
