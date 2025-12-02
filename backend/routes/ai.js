@@ -3,11 +3,25 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const router = express.Router();
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'your_gemini_api_key_here');
+// Get API key from environment variables (required)
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+if (!GEMINI_API_KEY) {
+  console.error('❌ GEMINI_API_KEY is not set in environment variables!');
+  console.error('💡 Please set GEMINI_API_KEY in your .env file or deployment environment variables.');
+}
+
+const genAI = GEMINI_API_KEY ? new GoogleGenerativeAI(GEMINI_API_KEY) : null;
 
 // Predict yield using AI
 router.post('/predict-yield', async (req, res) => {
   try {
+    if (!genAI) {
+      return res.status(500).json({
+        error: 'AI service not configured',
+        message: 'GEMINI_API_KEY is not set. Please configure it in environment variables.',
+      });
+    }
+
     const { cropType, area, weatherCondition, fertilizerUsed, historicalYield, latitude, longitude } = req.body;
 
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
@@ -81,6 +95,13 @@ Format the response as JSON with keys: predictedYield, confidence, factors, reco
 // Get crop recommendations based on location
 router.post('/crop-recommendation', async (req, res) => {
   try {
+    if (!genAI) {
+      return res.status(500).json({
+        error: 'AI service not configured',
+        message: 'GEMINI_API_KEY is not set. Please configure it in environment variables.',
+      });
+    }
+
     const { latitude, longitude, season } = req.body;
 
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
